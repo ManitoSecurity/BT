@@ -35,10 +35,11 @@ void BtReceive(void){
       SdLog("btserial available");
       // read the incoming byte:
       incomingByte = btSerial.read();
-      SdLog("got some shit");
+      SdLog("got something");
       if(incomingByte != 13){
         gBtMsg[index++] = (char)incomingByte;
         keepReading = true;
+        gBtMsg[index] = '\0';
       }
     }
   }
@@ -68,32 +69,46 @@ void BtSend(char* i_pBtCmd, bool i_ln = true){
   //Debug end
 }
 
-void SdLog(char* shit){
-  Serial.println(shit);
+void SdLog(char* ish){
+  Serial.println(ish);
   
 }
 
 void BtInit(void){ 
   bool btConnect = false;
 
-  gBtKnownMAC[0] = "000666412345"; // Change this to one of your MAC addresses
-  gBtKnownMAC[1] = "000666454321"; // and this one too
+  gBtKnownMAC[0] = "000666682E57"; // Change this to one of your MAC addresses
+  gBtKnownMAC[1] = "000666682E68"; // and this one too
   
   isMaster = digitalRead(masterPin);
   
-  Serial.begin(115200);
+  Serial.begin(9600);
   btSerial.begin(115200); 
+  
+  delay(1000); //needs 2 second window to make rn41 happy
   BtSend("$$$", false);
+  delay(1000);
+  BtSend("U,9600,N");  
+  delay(1000);
+  BtSend("GK");
+  delay(1000);
+  BtReceive();
+  delay(1000);
+  BtSend("---");  
+  btSerial.begin(9600);
   
   if(isMaster == LOW){
     SdLog(">>>> Set To Master <<<<");
-
+    delay(1000); //needs 2 second window to make rn41 happy
+    BtSend("$$$", false);
+    delay(1000);
     BtSend("SM,1");
-
+    delay(500);
     BtSend("I,10");
+    delay(500);
     BtSend("---"); 
    
-    delay(5000);
+    delay(7000);
     
     while(!btConnect){
       
@@ -134,7 +149,9 @@ void BtInit(void){
               
               gBtCmd[15] = '\0';
                   
+              delay(1000); //needs 2 second window to make rn41 happy
               BtSend("$$$", false);
+              delay(1000);
               BtSend(gBtCmd);
               BtSend("---");      
 
@@ -142,8 +159,9 @@ void BtInit(void){
               digitalWrite(lightG,HIGH);
               
               while(!btConnect){
-                delay(1000);
+                delay(1000); //needs 2 second window to make rn41 happy
                 BtSend("$$$", false);
+                delay(1000);
                 BtSend("GK");
                 
                 int numVal = 0;
@@ -173,9 +191,9 @@ void BtInit(void){
     BtSend("---"); 
     
     while(!btConnect){
-      delay(1000);
-
+      delay(1000); //needs 2 second window to make rn41 happy
       BtSend("$$$", false);
+      delay(1000);
       BtSend("GK");
       
       int numVal = 0;
@@ -214,11 +232,8 @@ void receiveMsg(){
     if (btSerial.available() > 0) {
       // read the incoming byte:
       incomingByte = btSerial.read();
-      if(incomingByte == 'R'){
-        digitalWrite(lightB, LOW);
-        delay(50);
-        digitalWrite(lightB,HIGH);
-      }
+      Serial.print("got: ");
+      Serial.println(incomingByte);
     }
     
     delay(100);
@@ -226,26 +241,19 @@ void receiveMsg(){
 }
 
 void sendMsg(){
-  digitalWrite(lightG,LOW);  
   delay(50);  
-  btSerial.print("R");
-  digitalWrite(lightG,HIGH);
+  btSerial.println("R");
   delay(50);  
-  btSerial.print("R");
-  digitalWrite(lightG,LOW);  
   delay(50);  
-  digitalWrite(lightG,HIGH);
-  btSerial.print("R");
+  btSerial.println("R");
 }
 
 void loop() 
 {  
   if(msgToken == 1){
-    digitalWrite(lightG,HIGH);
     sendMsg();
     delay(1000);
   }else{
-    digitalWrite(lightB,HIGH);
     receiveMsg();
   }
 }

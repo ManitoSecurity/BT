@@ -15,47 +15,83 @@ int bluetoothTx = 2;  // TX-O pin of bluetooth mate, Arduino D2
 int bluetoothRx = 3;  // RX-I pin of bluetooth mate, Arduino D3
 int IRPin = 8;
 int IRout;
+boolean connection;
 
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
 
 void setup()
 {
+  connection = true;
+  
   delay(2000);
   pinMode(IRPin, INPUT);
   Serial.begin(9600);  // Begin the serial monitor at 9600bps
   Serial.println("Start of setup");
   delay(1500);
-  bluetooth.begin(115200);  // The Bluetooth Mate defaults to 115200bps
+  bluetooth.begin(9600);  // The Bluetooth Mate defaults to 115200bps
+                          // so be sure to fix you default SU,96
   delay(1500); 
-  bluetooth.write("$$$");  // Print three times individually
-  //bluetooth.write("$");
-  //bluetooth.write("$");  // Enter command mode
+  bluetooth.print("$");  // Print three times individually
+  bluetooth.print("$");
+  bluetooth.print("$");
   delay(1500);  // Short delay, wait for the Mate to send back CMD
-  bluetooth.println("U,9600,N");  // Temporarily Change the baudrate to 9600, no parity
-  // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
-  bluetooth.begin(9600);  // Start bluetooth serial at 9600
-  Serial.println("did stuff");
-}
-
-void loop()
-{
-  IRout = digitalRead(IRPin);
-  //Serial.println(IRout);
-  if(IRout == LOW){
-    bluetooth.println("I spy with my little eye...");
-    delay(2000); //wait a sec for kicks
-  }
-  if(bluetooth.available())  // If the bluetooth sent any characters
+  bluetooth.println("D");  
+  //delay(500);
+  //bluetooth.println("---");  
+  
+  while(bluetooth.available()>0)  // If the bluetooth sent any characters
   {
     //Serial.println("Stuff was in the bluetooth que");
     // Send any characters the bluetooth prints to the serial monitor
     Serial.print((char)bluetooth.read());//(char)  
   }
-  if(Serial.available())  // If stuff was typed in the serial monitor
+  // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
+  
+  Serial.println("did stuff");
+}
+
+void loop()
+{
+  IRout = digitalRead(IRPin);  
+  /*
+  delay(1500); 
+  bluetooth.print("$");  // Print three times individually
+  bluetooth.print("$");
+  bluetooth.print("$");
+  delay(1500);  // Short delay, wait for the Mate to send back CMD
+  bluetooth.println("GK");  
+  int i = 0;
+  while(bluetooth.available()>0 && i < 5)  // If the bluetooth sent any characters
   {
-    Serial.println("Stuff was in the serial moniter");
-    // Send any characters the Serial monitor prints to the bluetooth
-    bluetooth.print((char)Serial.read());//(char)
+    if(i = 0){ 
+      if((char)bluetooth.read() == '1')
+        connection = true;
+      else
+        connection = false;
+    } else{
+      bluetooth.read(); 
+    }
+  }
+  delay(1500); 
+  bluetooth.println("---");
+  delay(1500);
+  */
+  if(connection){
+    if(IRout == LOW){
+      bluetooth.println("detection");
+      delay(10000); //wait a sec for kicks
+    }
+    if(bluetooth.available())  // If the bluetooth sent any characters
+    {
+  
+      Serial.print((char)bluetooth.read());//(char)  
+    }
+    if(Serial.available())  // If stuff was typed in the serial monitor
+    {
+      Serial.println("Stuff was in the serial moniter");
+      // Send any characters the Serial monitor prints to the bluetooth
+      bluetooth.print((char)Serial.read());//(char)
+    }
   }
   // and loop forever and ever!
 }
