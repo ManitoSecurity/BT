@@ -9,6 +9,12 @@
  communicate at 9600 bps (from 115200), and passes any serial
  data between Serial Monitor and bluetooth module.
  */
+ 
+ /*
+ Heavily modified by Brian Gravelle and Chris Birmingham
+ will commmunicate with phone
+ sends "detection" when IR sensors reports movement
+ */
 #include <SoftwareSerial.h>  
 
 int bluetoothTx = 2;  // TX-O pin of bluetooth mate, Arduino D2
