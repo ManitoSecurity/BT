@@ -14,7 +14,7 @@ data sheet here: https://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluet
   * master can send 'A' or 'D' to arm or disarm the device
 
   TO DO
-  ------------
+  --------------
   * better reciept of commands from phone
   * improve alerts to wait after sending and avoid false positives
 
