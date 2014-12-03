@@ -17,8 +17,8 @@
  */
 #include <SoftwareSerial.h>  
 
-int bluetoothTx = 2;  // TX-O pin of bluetooth mate, Arduino D2
-int bluetoothRx = 3;  // RX-I pin of bluetooth mate, Arduino D3
+int bluetoothTx = 4;  // TX-O pin of bluetooth mate, Arduino D2
+int bluetoothRx = 5;  // RX-I pin of bluetooth mate, Arduino D3
 int IRPin = 8;
 int IRout;
 boolean connection;
@@ -42,7 +42,7 @@ void setup()
   bluetooth.print("$");
   delay(1500);  // Short delay, wait for the Mate to send back CMD
   bluetooth.println("D");  
-  //delay(500);
+  delay(1000);
   //bluetooth.println("---");  
   
   while(bluetooth.available()>0)  // If the bluetooth sent any characters
@@ -52,6 +52,8 @@ void setup()
     Serial.print((char)bluetooth.read());//(char)  
   }
   // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
+  
+  bluetooth.println("---"); 
   
   Serial.println("did stuff");
 }
@@ -84,8 +86,8 @@ void loop()
   */
   if(connection){
     if(IRout == LOW){
-      bluetooth.println("detection");
-      delay(10000); //wait a sec for kicks
+      bluetooth.println("ho ho ho");
+      delay(10000); //wait 10 secs for kicks
     }
     if(bluetooth.available())  // If the bluetooth sent any characters
     {
