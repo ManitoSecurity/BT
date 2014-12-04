@@ -14,19 +14,20 @@ data sheet here: https://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluet
   * master can send 'A' or 'D' to arm or disarm the device
 
   **TO DO**
-  * better reciept of commands from phone
   * improve alerts to wait after sending and avoid false positives
 
   **Known Problems**
-  * command from phone often recieved while the arduino is checking connection or somthing,
-    so it gets lost
+  * none- we're perfect!
+  * it just doesn't have enough functionality yet
 
   **Versions**
 
-  *bt_phone_v2*
+  *bt_phone_v2_2*
    * current working
-   * adds arming and disarming capability
+   * reliable reciept of messages from phone
 
+  *bt_phone_v2*
+   * adds arming and disarming capability
 
   *bt_phone_v1*
    * initial prototype

@@ -22,6 +22,7 @@ data sheet here: https://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluet
     so it gets lost
 
   **Versions**
+
   *bt_phone_v2*
    * current working
    * adds arming and disarming capability
