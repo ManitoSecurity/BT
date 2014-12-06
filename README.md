@@ -10,17 +10,23 @@ data sheet here: https://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluet
 **bt_phone**
 ----------------------------------------------------------------------------
   * prototype communication arduino to phone with rn41
-  * indicates "detection" when IR sensor picks up movement
+  * indicates 'X' when IR sensor picks up movement
   * master can send 'A' or 'D' to arm or disarm the device
 
   **TO DO**
   * improve alerts to wait after sending and avoid false positives
+  * improve reciept of phone messages
 
   **Known Problems**
-  * none- we're perfect!
+  * not perfect reciept of message from phone
   * it just doesn't have enough functionality yet
 
   **Versions**
+
+  *bt_phone_v2_3*
+   * not working
+   * attempt to improve reciept of phone messages
+   * alert to phone is 'X'
 
   *bt_phone_v2_2*
    * current working
