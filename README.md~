@@ -18,10 +18,19 @@ data sheet here: https://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluet
   * improve reciept of phone messages
 
   **Known Problems**
-  * not perfect reciept of message from phone
-  * it just doesn't have enough functionality yet
+  * phone sometimes splits messages 
+  * it doesn't have enough functionality yet
 
   **Versions**
+
+  *bt_phone_v3_1*
+   * not working
+   * sending text to arduino through rn-41
+   * aims to allow WiFi setup
+
+  *bt_phone_v2_4*
+   * current working
+   * improved response to phone commands by checking connection less
 
   *bt_phone_v2_3*
    * not working
@@ -29,7 +38,7 @@ data sheet here: https://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluet
    * alert to phone is 'X'
 
   *bt_phone_v2_2*
-   * current working
+   * working
    * reliable reciept of messages from phone
 
   *bt_phone_v2*

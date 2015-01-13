@@ -18,18 +18,19 @@ int IRout;
 boolean connection;
 boolean armed;
 char btReply[256];
+char ssid[256];
 int loopCount;
 
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
 
 void sendCmd(char* cmd){
-  delay(1000); 
+  delay(1100); 
   checkArmed(); //grab message sent in that second (must b/c these delay are most of the time)
   bluetooth.print("$");  // Print three times individually
   bluetooth.print("$");
-  bluetooth.print("$");
-  purgeReply(); 
-  delay(1000);  // Short delay, wait for the Mate to send back CMD */
+  bluetooth.print("$"); 
+  delay(1100);  // Short delay, wait for the Mate to send back CMD */
+  purgeReply();
   
   bluetooth.println(cmd);
   getReply();  
@@ -60,10 +61,35 @@ void getReply(){
 void purgeReply(){
   int i = 0;
   delay(100);
-  while(bluetooth.available()>0)  // If the bluetooth sent any characters
+  while(bluetooth.available() > 0)  // If the bluetooth sent any characters
   {
     bluetooth.read();  
   }
+}
+
+void getWiFi(){
+  int j = 0;
+  int data = 0;
+  
+  bluetooth.print("enter SSID");
+  
+  while((char)data != '#'){
+    if(bluetooth.available() > 0){
+      data = bluetooth.read(); 
+      delay(200);
+    
+    
+      if((char)data != '#'){
+        ssid[j] = (char)data; 
+        j++;
+      }
+    }    
+  }
+  
+  ssid[j] = '\0';
+  
+  Serial.print("SSID: ");
+  Serial.println(ssid);
 }
 
 void checkArmed(){
@@ -113,15 +139,11 @@ void setup()
   // so be sure to fix you default SU,96
 
   delay(500);
-        
-  delay(1000); 
-  bluetooth.print("$");  // Print three times individually
-  bluetooth.print("$");
-  bluetooth.print("$");
-  delay(1000);
       
   getReply(); 
   sendCmd("D");
+      
+  getWiFi();
       
   Serial.println("setup complete");
   
@@ -131,7 +153,6 @@ void loop()
 {
   IRout = digitalRead(IRPin);
   checkStatus();
-  sendMsg("W");
 
   if(connection){
     if(armed){

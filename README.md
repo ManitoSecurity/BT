@@ -24,7 +24,7 @@ data sheet here: https://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluet
   **Versions**
 
   *bt_phone_v3_1*
-   * not working
+   * working
    * sending text to arduino through rn-41
    * aims to allow WiFi setup
 

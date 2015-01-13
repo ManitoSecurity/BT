@@ -112,12 +112,6 @@ void setup()
   // so be sure to fix you default SU,96
 
   delay(500);
-        
-  delay(1000); 
-  bluetooth.print("$");  // Print three times individually
-  bluetooth.print("$");
-  bluetooth.print("$");
-  delay(1000);
       
   getReply(); 
   sendCmd("D");
